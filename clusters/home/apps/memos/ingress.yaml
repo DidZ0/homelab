@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: memos 
+  namespace: memos 
+  annotations:
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`notes.local.bomal.cloud`)
+      kind: Rule
+      services:
+      - name: memos
+        port: 5230 
+  tls:
+    secretName: local-bomal-cloud-tls
