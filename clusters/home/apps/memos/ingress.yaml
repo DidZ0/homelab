@@ -9,7 +9,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`notes.local.bomal.cloud`)
+    - match: Host(`memos.local.bomal.cloud`)
       kind: Rule
       services:
       - name: memos
