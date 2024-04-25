@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kasm 
+  labels:
+    app: kasm 
+  namespace: kasm 
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: kasm 
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: kasm 
+    spec:
+      volumes:
+      - name: kasm-longhorn
+        persistentVolumeClaim:
+          claimName: kasm-pvc
+      containers:
+      - image: lscr.io/linuxserver/kasm:latest 
+        name: kasm 
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        env:
+        - name: KASM_PORT 
+          value: "443" 
+        ports:
+        - containerPort: 3000 
+          name: config 
+          protocol: TCP
+        - containerPort: 443 
+          name: https 
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /opt
+          name: kasm-longhorn
+          subPath: opt 
